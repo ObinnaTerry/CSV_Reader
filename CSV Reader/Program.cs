@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using CSV_Reader.Data;
 
 namespace CSV_Reader
 {
@@ -6,6 +9,11 @@ namespace CSV_Reader
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var connectionString = builder.Configuration.GetConnectionString("CSV_ReaderContextConnection") ?? throw new InvalidOperationException("Connection string 'CSV_ReaderContextConnection' not found.");
+
+            builder.Services.AddDbContext<CSV_ReaderContext>(options => options.UseSqlite(connectionString));
+
+            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<CSV_ReaderContext>();
 
             // Add services to the container.
 
