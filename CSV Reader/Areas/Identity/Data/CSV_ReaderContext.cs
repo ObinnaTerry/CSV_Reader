@@ -14,6 +14,12 @@ public class ApplicationContext : DbContext
 
     public virtual DbSet<Product> Products { get; set; }
 
+    public void DropTable(string tableName)
+    {
+        Database.EnsureDeleted();
+        //Database.Migrate();
+    }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

@@ -2,6 +2,7 @@
 {
     public interface IGenericRepo<T> where T : class
     {
+        void CreateDataBase();
         void Delete(object id);
         void Delete(T? entityToDelete);
         IQueryable<T> GetAll();
