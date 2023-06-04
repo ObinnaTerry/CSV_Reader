@@ -8,21 +8,21 @@ namespace CSV_Reader.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public int ItemNumber { get; set; }
-        public string? ItemName { get; set; }
-        public string? Manufacturer { get; set; }
-        public string? Description { get; set; }
-        public string? MaterialInformation { get; set; }
-        public string? Gender { get; set; }
-        public string? ProductType { get; set; }
-        public string? Sleeve { get; set; }
-        public string? Leg { get; set; }
-        public string? Collar { get; set; }
-        public string? Manufacture { get; set; }
-        public string? BagType { get; set; }
-        public double GramWeight { get; set; }
+        public string Hauptartikelnr { get; set; }
+        public string? Artikelname { get; set; }
+        public string? Hersteller { get; set; }
+        public string? Beschreibung { get; set; }
+        public string? Materialangaben { get; set; }
+        public string? Geschlecht { get; set; }
+        public string? Produktart { get; set; }
+        public string? Ärmel { get; set; }
+        public string? Bein { get; set; }
+        public string? Kragen { get; set; }
+        public string? Herstellung { get; set; }
+        public string? Taschenart { get; set; }
+        public string? Grammatur { get; set; }
         public string? Material { get; set; }
-        public string? CountryOfOrigin { get; set; }
-        public string? ImageName { get; set; }
+        public string? Ursprungsland { get; set; }
+        public string? Bildname { get; set; }
     }
 }
