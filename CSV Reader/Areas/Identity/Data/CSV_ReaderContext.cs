@@ -1,15 +1,18 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CSV_Reader.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSV_Reader.Data;
 
-public class CSV_ReaderContext : IdentityDbContext<IdentityUser>
+public class ApplicationContext : DbContext
 {
-    public CSV_ReaderContext(DbContextOptions<CSV_ReaderContext> options)
+    public ApplicationContext(DbContextOptions<ApplicationContext> options)
         : base(options)
     {
     }
+
+    public virtual DbSet<Product> Products { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
