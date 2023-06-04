@@ -22,8 +22,12 @@ namespace CSV_Reader.Services
             _mapper = mapper;
         }
 
-        public void ImportItemsFromCsv(StreamReader reader)
+        public void ImportProductsFromCsv(IFormFile file)
         {
+
+            var stream = file.OpenReadStream();
+            var reader = new StreamReader(stream);
+
             var config = new CsvConfiguration(CultureInfo.InvariantCulture) { Delimiter = ";", Encoding = Encoding.UTF8 };
 
             using (var csv = new CsvReader(reader, config))

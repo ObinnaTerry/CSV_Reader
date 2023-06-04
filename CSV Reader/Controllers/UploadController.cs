@@ -24,7 +24,7 @@ namespace CSV_Reader.Controllers
 
         // POST api/<UploadController>
         [HttpPost]
-        public IActionResult Post(IFormFile file)
+        public async Task<IActionResult> Post(IFormFile file)
         {
             _productRepo.CreateDataBase();
 
@@ -38,11 +38,9 @@ namespace CSV_Reader.Controllers
                 return BadRequest("No file was selected for upload.");
             }
 
-            var stream = file.OpenReadStream();
-            var reader = new StreamReader(stream);
-            _csvService.ImportItemsFromCsv(reader);
+            _csvService.ImportProductsFromCsv(file);
 
-            Utils.FileHelper.SaveFile(_environment, file);
+            await Utils.FileHelper.SaveFile(_environment, file);
 
             return Ok("CSV file imported successfully.");
         }
@@ -59,11 +57,8 @@ namespace CSV_Reader.Controllers
 
             _productRepo.DropTable("Products");
             _productRepo.CreateDataBase();
-            //_productRepo.Save();
 
-            var stream = file.OpenReadStream();
-            var reader = new StreamReader(stream);
-            _csvService.ImportItemsFromCsv(reader);
+            _csvService.ImportProductsFromCsv(file);
 
             await Utils.FileHelper.SaveFile(_environment, file);
 
