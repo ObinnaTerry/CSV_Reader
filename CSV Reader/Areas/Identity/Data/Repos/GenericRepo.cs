@@ -14,6 +14,11 @@ namespace CSV_Reader.Areas.Identity.Data.Repos
             _dbSet = context.Set<T>();
         }
 
+        public void CreateDataBase()
+        {
+            _context.Database.EnsureCreated();
+        }
+
         public virtual void Insert(T entity)
         {
             _dbSet.Add(entity);

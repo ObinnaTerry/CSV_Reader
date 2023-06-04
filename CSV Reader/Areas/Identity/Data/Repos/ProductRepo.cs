@@ -13,7 +13,12 @@ namespace CSV_Reader.Areas.Identity.Data.Repos
             _context = context;
         }
 
-        public virtual void Insert(List<Product> entity)
+        public void DropTable(string tableName)
+        {
+            _context.DropTable(tableName);
+        }
+
+        public void Insert(List<Product> entity)
         {
             _dbSet.AddRange(entity);
         }
