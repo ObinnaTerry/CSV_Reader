@@ -1,4 +1,5 @@
-﻿using CSV_Reader.Interfaces;
+﻿using CSV_Reader.Entities;
+using CSV_Reader.Interfaces;
 using CSV_Reader.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,18 +13,22 @@ namespace CSV_Reader.Controllers
     {
         private readonly CsvService _csvService;
         private readonly IProductRepo _productRepo;
+        private readonly IWebHostEnvironment _environment;
 
-        public UploadController(CsvService csvService, IProductRepo productRepo)
+        public UploadController(CsvService csvService, IProductRepo productRepo, IWebHostEnvironment environment)
         {
             _csvService = csvService;
             _productRepo = productRepo;
+            _environment = environment;
         }
 
         // POST api/<UploadController>
         [HttpPost]
         public IActionResult Post(IFormFile file)
         {
-            if(_productRepo.GetAll().Any())
+            _productRepo.CreateDataBase();
+
+            if (_productRepo.GetAll().Any())
             {
                 return Conflict("A file was previously been uploaded");
             }
@@ -33,16 +38,34 @@ namespace CSV_Reader.Controllers
                 return BadRequest("No file was selected for upload.");
             }
 
-            string filePath = Path.GetTempFileName();
+            var stream = file.OpenReadStream();
+            var reader = new StreamReader(stream);
+            _csvService.ImportItemsFromCsv(reader);
 
-            using (var stream = new FileStream(filePath, FileMode.Create))
+            Utils.FileHelper.SaveFile(_environment, file);
+
+            return Ok("CSV file imported successfully.");
+        }
+
+        // PUT: api/Products/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut]
+        public async Task<IActionResult> PutProduct(IFormFile file)
+        {
+            if (file == null || file.Length <= 0)
             {
-                file.CopyTo(stream);
+                return BadRequest("No file was selected for upload.");
             }
 
-            _csvService.ImportItemsFromCsv(filePath);
+            _productRepo.DropTable("Products");
+            _productRepo.CreateDataBase();
+            //_productRepo.Save();
 
-            System.IO.File.Delete(filePath);
+            var stream = file.OpenReadStream();
+            var reader = new StreamReader(stream);
+            _csvService.ImportItemsFromCsv(reader);
+
+            await Utils.FileHelper.SaveFile(_environment, file);
 
             return Ok("CSV file imported successfully.");
         }
