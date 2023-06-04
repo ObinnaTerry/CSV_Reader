@@ -13,6 +13,11 @@ namespace CSV_Reader.Areas.Identity.Data.Repos
             _context = context;
         }
 
+        public virtual void Insert(List<Product> entity)
+        {
+            _dbSet.AddRange(entity);
+        }
+
         public void Save()
         {
             _context.SaveChanges();
