@@ -1,6 +1,7 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using CSV_Reader.Data;
+using CSV_Reader.Interfaces;
+using CSV_Reader.Areas.Identity.Data.Repos;
 
 namespace CSV_Reader
 {
@@ -9,13 +10,15 @@ namespace CSV_Reader
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            var connectionString = builder.Configuration.GetConnectionString("CSV_ReaderContextConnection") ?? throw new InvalidOperationException("Connection string 'CSV_ReaderContextConnection' not found.");
+            var connectionString = builder.Configuration.GetConnectionString("ApplicationDbContext") ?? throw new InvalidOperationException("Connection string 'CSV_ReaderContextConnection' not found.");
 
-            builder.Services.AddDbContext<CSV_ReaderContext>(options => options.UseSqlite(connectionString));
+            builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlite(connectionString));
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<CSV_ReaderContext>();
+            //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationContext>();
 
             // Add services to the container.
+            builder.Services.AddScoped<IProductRepo, ProductRepo>();
+            builder.Services.AddScoped(typeof(IGenericRepo<>), typeof(GenericRepo<>));
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
