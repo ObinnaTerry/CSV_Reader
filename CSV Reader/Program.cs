@@ -2,6 +2,7 @@
 using CSV_Reader.Data;
 using CSV_Reader.Interfaces;
 using CSV_Reader.Areas.Identity.Data.Repos;
+using CSV_Reader.Services;
 
 namespace CSV_Reader
 {
@@ -19,6 +20,8 @@ namespace CSV_Reader
             // Add services to the container.
             builder.Services.AddScoped<IProductRepo, ProductRepo>();
             builder.Services.AddScoped(typeof(IGenericRepo<>), typeof(GenericRepo<>));
+            builder.Services.AddScoped<CsvService>();
+            builder.Services.AddAutoMapper(typeof(Program));
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
