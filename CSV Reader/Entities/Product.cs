@@ -16,7 +16,7 @@ namespace CSV_Reader.Entities
         public string? Materialangaben { get; set; }
         public string? Geschlecht { get; set; }
         public string? Produktart { get; set; }
-        [JsonPropertyName("Armel")]
+        [JsonPropertyName("armel")]
         public string? Ärmel { get; set; }
         public string? Bein { get; set; }
         public string? Kragen { get; set; }
