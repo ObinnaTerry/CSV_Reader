@@ -22,11 +22,12 @@ namespace CSV_Reader.Services
             _mapper = mapper;
         }
 
-        public void ImportProductsFromCsv(IFormFile file)
+        public List<Product> ImportProductsFromCsv(IFormFile file)
         {
-
             var stream = file.OpenReadStream();
             var reader = new StreamReader(stream);
+
+            List<Product>? productsOut = null;
 
             var config = new CsvConfiguration(CultureInfo.InvariantCulture) { Delimiter = ";", Encoding = Encoding.UTF8 };
 
@@ -34,9 +35,13 @@ namespace CSV_Reader.Services
             {
                 var products = csv.GetRecords<ProductModel>().ToList();
 
-                _productRepo.Insert(_mapper.Map<List<Product>>(products));
+                productsOut = _mapper.Map<List<Product>>(products);
+
+                _productRepo.Insert(productsOut);
                 _productRepo.Save();
             }
+
+            return productsOut;
         }
     }
 }

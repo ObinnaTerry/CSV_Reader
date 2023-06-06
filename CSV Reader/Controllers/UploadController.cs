@@ -58,11 +58,11 @@ namespace CSV_Reader.Controllers
             _productRepo.DropTable("Products");
             _productRepo.CreateDataBase();
 
-            _csvService.ImportProductsFromCsv(file);
+            List<Product> products = _csvService.ImportProductsFromCsv(file);
 
             await Utils.FileHelper.SaveFile(_environment, file);
 
-            return Ok("CSV file imported successfully.");
+            return Ok(products);
         }
     }
 }
