@@ -19,7 +19,7 @@ namespace CSV_Reader.Controllers
         [HttpGet]
         public IActionResult GetProducts()
         {
-            return Ok(_productRepo.GetAll());
+            return Ok(_productRepo.GetAll().OrderByDescending(x => x.Id));
         }
 
         // GET: api/Products/5
